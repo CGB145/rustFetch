@@ -1,4 +1,3 @@
-//use sysinfo::{ Components, Disks, Networks, System,};
 use std::fs::File;
 use std::io::prelude::*;
 
