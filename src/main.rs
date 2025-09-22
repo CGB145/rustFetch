@@ -46,11 +46,11 @@ fn find_memory_entry(file:String, entry_name:&String) -> String{
 fn main() {
     // Memory
     // Open linux Memory Info file
-    let file = File::open("/proc/meminfo");
+    let mem_file = File::open("/proc/meminfo");
     // create String to push content to
     let mut memory_contents = String::new();
     // push content to created string
-    match file.expect("REASON").read_to_string(&mut memory_contents){
+    match mem_file.expect("REASON").read_to_string(&mut memory_contents){
         Ok(_) => {},
         Err(_) =>{println!("Error reading file")},
     }
@@ -81,6 +81,81 @@ fn main() {
     mem_available = mem_available / 1024.0 / 1024.0;
     mem_available = round_to_nth_digit(mem_available, 4);
 
+    // Uptime
+    // Open linux Uptime Info file
+    let uptime_file = File::open("/proc/uptime");
+    // create String to push content to
+    let mut uptime_contents = String::new();
+    // push content to created string
+    match uptime_file.expect("REASON").read_to_string(&mut uptime_contents){
+        Ok(_) => {},
+        Err(_) =>{println!("Error reading file")},
+    }
+
+    let uptime_contents_location = match uptime_contents.find(char::is_whitespace){
+        Some(pos) => pos,
+        None => return
+
+    };
+
+    uptime_contents = uptime_contents[..uptime_contents_location].to_string();
+    let mut uptime_contents_float = uptime_contents.parse::<f64>().expect("Err");
+    uptime_contents_float = uptime_contents_float/60.0;
+
+    let uptime_contents_str = if uptime_contents_float > 60.0{
+        uptime_contents_float = uptime_contents_float/60.0;
+        uptime_contents_float = round_to_nth_digit(uptime_contents_float,4);
+        format!("{}h", uptime_contents_float)
+    }else{
+        format!("{}m", uptime_contents_float)
+    };
+
+
+
+    // Uptime
+    // Open linux Uptime Info file
+    let version_file = File::open("/proc/version");
+    // create String to push content to
+    let mut version_content = String::new();
+    // push content to created string
+    match version_file.expect("REASON").read_to_string(&mut version_content){
+        Ok(_) => {},
+        Err(_) =>{println!("Error reading file")},
+    }
+
+    let version_content: String = version_content
+        .split_whitespace()
+        .take(3)
+        .collect::<Vec<_>>()
+        .join(" ")
+        .replace("version ", "");
+
+
+    println!("
+[38;5;213m++++++++++***%@@@@@@@@@@@@%*************[0m
+[38;5;213m+++++++++*@@@%#*+=----=+*#%@@@#*********[0m
+[38;5;213m+++++++*%@#+=--::::....:::--+#@%**+*****[0m
+[38;5;213m++++++#@%*-:::::::-=-::::==-::+%@%#*****[0m
+[38;5;213m++++*#%@*--:::..::-+*+:.:=+*=.:=#@@*+***[0m
+[38;5;213m++++*@@*=:::::::::-*@*:.:=*@=..:-#@%#*+*[0m
+[38;5;213m+++#%%*=::::::::.:*@@*:.-%@@+...:=#@%++*[0m
+[38;5;213m=*%@%+--::::::::::+#@*:.:*%@+.::::=%@%*=[0m
+[38;5;213m=*@#=:::::::::::::-*@*:.:=#@+.::::-*%@*=[0m
+[38;5;213m@%*=:::::::::=++++==*+::::=**+=-::::=%@@[0m
+[38;5;213m@%+-.:::::::::::::::::::::::::::::::-+%@[0m
+[38;5;213m@#-:::::---:::::::::::::-=-:::.::-----#@[0m
+[38;5;213m@%+-:::-=+--::::::::::::::::::::----=*%@[0m
+[38;5;213m#%@#*++***-:-::::::::::::::::::-=++*#%%#[0m
+[38;5;213m+*%@@%###*=---:-::::::::::::---=**#%%@#*[0m
+[38;5;213m##%%##****+++=--------------==+*#****#@@[0m
+[38;5;213m%%%#+:-++++***+==----------=*###*+++*#%@[0m
+[38;5;213m@%#*+==++++++****+=====+*######*****#%@@[0m
+[38;5;213m@@%#*##********##%%@@@@@@@@@@@@@@@@@@@%#[0m
+[38;5;213m#%@@@@@@@@@@@@@@@@#+++++++*#############[0m
+
+");
+    println!("Kernel: {}", version_content);
+    println!("Uptime: {}", uptime_contents_str);
     println!("MemTotal: {}", mem_total);
     println!("MemFree: {}", mem_free);
     println!("MemAvailable: {}", mem_available);
