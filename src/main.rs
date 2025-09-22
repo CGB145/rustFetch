@@ -107,6 +107,7 @@ fn main() {
         uptime_contents_float = round_to_nth_digit(uptime_contents_float,4);
         format!("{}h", uptime_contents_float)
     }else{
+        uptime_contents_float = round_to_nth_digit(uptime_contents_float,4);
         format!("{}m", uptime_contents_float)
     };
 
