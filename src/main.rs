@@ -137,7 +137,16 @@ fn main() {
 
     kernel_info_content = kernel_info_content.replace("\n","").replace("\r","");
 
-    println!("{}", kernel_info_content);
+
+    // User name
+    let user_name_file = File::open("/var/run/utmp");
+    let mut user_name_content = Vec::new();
+    match user_name_file.unwrap().read_to_end(&mut user_name_content) {
+        Ok(_) => {},
+        Err(_) => { println!("Error reading file") },
+    };
+
+
 
 
     println!("
