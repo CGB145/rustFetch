@@ -113,23 +113,31 @@ fn main() {
 
 
 
-    // Uptime
-    // Open linux Uptime Info file
-    let version_file = File::open("/proc/version");
+    //  OS Type
+    let ostype_file = File::open("/proc/sys/kernel/ostype");
     // create String to push content to
-    let mut version_content = String::new();
+    let mut ostype_content = String::new();
     // push content to created string
-    match version_file.expect("REASON").read_to_string(&mut version_content){
+    match ostype_file.expect("REASON").read_to_string(&mut ostype_content){
         Ok(_) => {},
         Err(_) =>{println!("Error reading file")},
     }
 
-    let version_content: String = version_content
-        .split_whitespace()
-        .take(3)
-        .collect::<Vec<_>>()
-        .join(" ")
-        .replace("version ", "");
+    ostype_content = ostype_content.trim().to_string();
+
+    // Kernel Info
+    let kernel_info_file = File::open("/proc/sys/kernel/osrelease");
+    // create String to push content to
+    let mut kernel_info_content = String::new();
+    // push content to created string
+    match kernel_info_file.expect("REASON").read_to_string(&mut kernel_info_content){
+        Ok(_) => {},
+        Err(_) =>{println!("Error reading file")},
+    }
+
+    kernel_info_content = kernel_info_content.replace("\n","").replace("\r","");
+
+    println!("{}", kernel_info_content);
 
 
     println!("
@@ -155,10 +163,10 @@ fn main() {
 [38;5;213m#%@@@@@@@@@@@@@@@@#+++++++*#############[0m
 
 ");
-    println!("Kernel: {}", version_content);
+    println!("Kernel: {} {}", ostype_content, kernel_info_content);
     println!("Uptime: {}", uptime_contents_str);
     println!("MemTotal: {}", mem_total);
-    println!("MemFree: {}", mem_free);
     println!("MemAvailable: {}", mem_available);
+    println!("MemUsed: {}", mem_total - mem_available);
 
 }
