@@ -1,5 +1,8 @@
 use std::fs::File;
 use std::io::prelude::*;
+use binary_to_ascii::convert;
+use regex::Regex;
+
 
 fn print_type_of<T>(_: &T) {
     println!("{}", std::any::type_name::<T>());
@@ -139,14 +142,26 @@ fn main() {
 
 
     // User name
-    let user_name_file = File::open("/var/run/utmp");
-    let mut user_name_content = Vec::new();
-    match user_name_file.unwrap().read_to_end(&mut user_name_content) {
-        Ok(_) => {},
-        Err(_) => { println!("Error reading file") },
-    };
+    let mut user_name_file = File::open("/var/run/utmp").expect("Err");
+    let mut buffer = Vec::new();
+
+    user_name_file.read_to_end(&mut buffer).expect("Err"); // Read entire file as bytes
+
+    let binary_string: String = buffer
+        .iter()
+        .map(|byte| format!("{:08b}", byte)) // Convert each byte to 8-bit binary
+        .collect();
+
+    println!("Binary string length: {}", binary_string.len());
 
 
+    let re = Regex::new(r"2([a-zA-Z0-9]+)uKh").unwrap();
+
+    let binding = convert(&binary_string);
+    let username = re.captures(&binding)
+        .and_then(|caps| caps.get(1))
+        .map(|m| m.as_str())
+        .unwrap_or("No username found");
 
 
     println!("
@@ -177,5 +192,6 @@ fn main() {
     println!("MemTotal: {}", mem_total);
     println!("MemAvailable: {}", mem_available);
     println!("MemUsed: {}", mem_total - mem_available);
+    println!("Username: {}", username);
 
 }
