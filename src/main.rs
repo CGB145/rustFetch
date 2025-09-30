@@ -149,7 +149,7 @@ fn main() {
 
     let binary_string: String = buffer
         .iter()
-        .map(|byte| format!("{:08b}", byte)) // Convert each byte to 8-bit binary
+        .map(|byte| format!("{:08b}", byte))
         .collect();
 
     println!("Binary string length: {}", binary_string.len());
