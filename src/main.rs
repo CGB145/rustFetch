@@ -151,10 +151,7 @@ fn main() {
         .iter()
         .map(|byte| format!("{:08b}", byte))
         .collect();
-
-    println!("Binary string length: {}", binary_string.len());
-
-
+    
     let re = Regex::new(r"2([a-zA-Z0-9]+)uKh").unwrap();
 
     let binding = convert(&binary_string);
