@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use binary_to_ascii::convert;
 use regex::Regex;
-
+use std::fs;
 
 fn print_type_of<T>(_: &T) {
     println!("{}", std::any::type_name::<T>());
@@ -59,7 +59,7 @@ fn main() {
     }
 
     // print content of file
-    println!("{}", memory_contents);
+    //println!("{}", memory_contents);
 
     // find desired entry in string -> convert output to f64 -> kb to gb -> round to nearest 2
     let mut string = String::from("MemTotal");
@@ -151,44 +151,44 @@ fn main() {
         .iter()
         .map(|byte| format!("{:08b}", byte))
         .collect();
-    
-    let re = Regex::new(r"2([a-zA-Z0-9]+)uKh").unwrap();
+
 
     let binding = convert(&binary_string);
-    let username = re.captures(&binding)
-        .and_then(|caps| caps.get(1))
-        .map(|m| m.as_str())
-        .unwrap_or("No username found");
+
+    let re = Regex::new(r"ts[^A-Za-z]*([A-Za-z]+):").unwrap();
 
 
-    println!("
-[38;5;213m++++++++++***%@@@@@@@@@@@@%*************[0m
-[38;5;213m+++++++++*@@@%#*+=----=+*#%@@@#*********[0m
-[38;5;213m+++++++*%@#+=--::::....:::--+#@%**+*****[0m
-[38;5;213m++++++#@%*-:::::::-=-::::==-::+%@%#*****[0m
-[38;5;213m++++*#%@*--:::..::-+*+:.:=+*=.:=#@@*+***[0m
-[38;5;213m++++*@@*=:::::::::-*@*:.:=*@=..:-#@%#*+*[0m
-[38;5;213m+++#%%*=::::::::.:*@@*:.-%@@+...:=#@%++*[0m
-[38;5;213m=*%@%+--::::::::::+#@*:.:*%@+.::::=%@%*=[0m
-[38;5;213m=*@#=:::::::::::::-*@*:.:=#@+.::::-*%@*=[0m
-[38;5;213m@%*=:::::::::=++++==*+::::=**+=-::::=%@@[0m
-[38;5;213m@%+-.:::::::::::::::::::::::::::::::-+%@[0m
-[38;5;213m@#-:::::---:::::::::::::-=-:::.::-----#@[0m
-[38;5;213m@%+-:::-=+--::::::::::::::::::::----=*%@[0m
-[38;5;213m#%@#*++***-:-::::::::::::::::::-=++*#%%#[0m
-[38;5;213m+*%@@%###*=---:-::::::::::::---=**#%%@#*[0m
-[38;5;213m##%%##****+++=--------------==+*#****#@@[0m
-[38;5;213m%%%#+:-++++***+==----------=*###*+++*#%@[0m
-[38;5;213m@%#*+==++++++****+=====+*######*****#%@@[0m
-[38;5;213m@@%#*##********##%%@@@@@@@@@@@@@@@@@@@%#[0m
-[38;5;213m#%@@@@@@@@@@@@@@@@#+++++++*#############[0m
+    let mut username: Option<String> = None;
 
-");
+    for cap in re.captures_iter(binding.as_str()) {
+        username = Some(cap[1].to_string());
+    }
+
+
+
+    let distro_content = fs::read_to_string("/etc/os-release");
+
+    let distro_content = match distro_content {
+        Ok(c) => c,
+        Err(e) => {
+            eprintln!("Failed to read file: {}", e);
+            return;
+        }
+    };
+
+    let mut distro_name = String::new();
+
+    if let Some(line) = distro_content.lines().find(|l| l.starts_with("NAME=")) {
+        distro_name = line.trim_start_matches("NAME=").trim_matches('"').to_string();
+    }
+
+
+
+    println!("Username: {}", username.unwrap());
+    println!("Distro: {}", distro_name);
     println!("Kernel: {} {}", ostype_content, kernel_info_content);
     println!("Uptime: {}", uptime_contents_str);
     println!("MemTotal: {}", mem_total);
     println!("MemAvailable: {}", mem_available);
     println!("MemUsed: {}", mem_total - mem_available);
-    println!("Username: {}", username);
-
 }
