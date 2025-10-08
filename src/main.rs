@@ -187,12 +187,12 @@ fn main() {
 println!("⠀⠀⠀⠀⠀⠀⠀⠀
         ⣀⣴⣦⡄⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⢠⢺⡽⣦⣴⣾⡿⣟⣿⢿⣷⣤⣺⠿⡳⡀      Username: {}⠀
-⠀⠀⠸⣿⣠⣿⡿⠛⠛⢿⡟⠛⠻⣿⣷⣠⡷⠁⠀     Distro:{}
-⠀⠀⠀⠀⠹⣿⠇⣠⡄⠀⠀⣠⡀⢹⣿⠉⣠⣤⣦     Kernel:{}{}
-⠀⠀⠀⠀⠀⢿⡇⠀⠀⢂⠂⠀⠀⢿⡇⢸⣿⠋⠁     Uptime:{}
-⠀⠀⠀⠀⠀⠘⣧⣈⠓⠚⠒⠋⣠⣞⠀⠘⢿⣷⡄     MemTotal:{}
-⠀⠀⠀⠀⠀⢸⣿⡿⣿⣿⣿⣿⢿⣿⡆⠀⢀⣿⡷     MemAvalable:{}
-⠀⠀⠀⣴⣶⣿⡿⣽⠟⠉⠉⢻⣿⢾⣷⣶⣿⠟⠁     MemUsed:{}
+⠀⠀⠸⣿⣠⣿⡿⠛⠛⢿⡟⠛⠻⣿⣷⣠⡷⠁⠀     Distro: {}
+⠀⠀⠀⠀⠹⣿⠇⣠⡄⠀⠀⣠⡀⢹⣿⠉⣠⣤⣦     Kernel: {}{}
+⠀⠀⠀⠀⠀⢿⡇⠀⠀⢂⠂⠀⠀⢿⡇⢸⣿⠋⠁     Uptime: {}
+⠀⠀⠀⠀⠀⠘⣧⣈⠓⠚⠒⠋⣠⣞⠀⠘⢿⣷⡄     MemTotal: {}GiB
+⠀⠀⠀⠀⠀⢸⣿⡿⣿⣿⣿⣿⢿⣿⡆⠀⢀⣿⡷     MemAvalable: {}GiB
+⠀⠀⠀⣴⣶⣿⡿⣽⠟⠉⠉⢻⣿⢾⣷⣶⣿⠟⠁     MemUsed: {}GiB
 ⠀⣴⠋⢻⣿⣿⣟⣿⡀⠀⠀⢸⣿⢿⣿⣟⡟⢶⣄
 ⠈⢯⡀⠈⠻⢿⣿⡽⣇⠀⢀⡸⢿⣿⡿⠋⠀⣀⠝
 ⠀⠀⠙⠢⠴⠭⠤⠤⠬⠧⠼⠤⠤⠤⠽⠦⠖⠁⠀", username.unwrap(), distro_name, ostype_content, kernel_info_content, uptime_contents_str, mem_total, mem_available, mem_total-mem_available);
