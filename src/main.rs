@@ -4,9 +4,9 @@ use binary_to_ascii::convert;
 use regex::Regex;
 use std::fs;
 
-fn print_type_of<T>(_: &T) {
+/*fn print_type_of<T>(_: &T) {
     println!("{}", std::any::type_name::<T>());
-}
+}*/
 
 fn round_to_nth_digit(x:f64, digit: usize) -> f64{
     let rounded:String = x.to_string();
@@ -69,12 +69,13 @@ fn main() {
     mem_total = round_to_nth_digit(mem_total, 5);
 
     // same
-    string.clear();
+    /*string.clear();
     string.push_str("MemFree");
     let mem_free: String=find_memory_entry(memory_contents.to_string(),&string);
     let mut mem_free:f64 = mem_free.parse::<f64>().expect("Err");
     mem_free = mem_free/1024.0/1024.0;
     mem_free = round_to_nth_digit(mem_free, 4);
+    */
 
     // same
     string.clear();
@@ -183,12 +184,24 @@ fn main() {
     }
 
 
+println!("⠀⠀⠀⠀⠀⠀⠀⠀
+        ⣀⣴⣦⡄⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⢠⢺⡽⣦⣴⣾⡿⣟⣿⢿⣷⣤⣺⠿⡳⡀      Username: {}⠀
+⠀⠀⠸⣿⣠⣿⡿⠛⠛⢿⡟⠛⠻⣿⣷⣠⡷⠁⠀     Distro:{}
+⠀⠀⠀⠀⠹⣿⠇⣠⡄⠀⠀⣠⡀⢹⣿⠉⣠⣤⣦     Kernel:{}{}
+⠀⠀⠀⠀⠀⢿⡇⠀⠀⢂⠂⠀⠀⢿⡇⢸⣿⠋⠁     Uptime:{}
+⠀⠀⠀⠀⠀⠘⣧⣈⠓⠚⠒⠋⣠⣞⠀⠘⢿⣷⡄     MemTotal:{}
+⠀⠀⠀⠀⠀⢸⣿⡿⣿⣿⣿⣿⢿⣿⡆⠀⢀⣿⡷     MemAvalable:{}
+⠀⠀⠀⣴⣶⣿⡿⣽⠟⠉⠉⢻⣿⢾⣷⣶⣿⠟⠁     MemUsed:{}
+⠀⣴⠋⢻⣿⣿⣟⣿⡀⠀⠀⢸⣿⢿⣿⣟⡟⢶⣄
+⠈⢯⡀⠈⠻⢿⣿⡽⣇⠀⢀⡸⢿⣿⡿⠋⠀⣀⠝
+⠀⠀⠙⠢⠴⠭⠤⠤⠬⠧⠼⠤⠤⠤⠽⠦⠖⠁⠀", username.unwrap(), distro_name, ostype_content, kernel_info_content, uptime_contents_str, mem_total, mem_available, mem_total-mem_available);
 
-    println!("Username: {}", username.unwrap());
+    /*println!("Username: {}", username.unwrap());
     println!("Distro: {}", distro_name);
     println!("Kernel: {} {}", ostype_content, kernel_info_content);
     println!("Uptime: {}", uptime_contents_str);
     println!("MemTotal: {}", mem_total);
     println!("MemAvailable: {}", mem_available);
-    println!("MemUsed: {}", mem_total - mem_available);
+    println!("MemUsed: {}", mem_total - mem_available);*/
 }
