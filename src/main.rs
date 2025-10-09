@@ -3,6 +3,7 @@ use std::io::prelude::*;
 use binary_to_ascii::convert;
 use regex::Regex;
 use std::fs;
+use sysinfo::Disks;
 
 /*fn print_type_of<T>(_: &T) {
     println!("{}", std::any::type_name::<T>());
@@ -191,7 +192,7 @@ println!("⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠹⣿⠇⣠⡄⠀⠀⣠⡀⢹⣿⠉⣠⣤⣦     Kernel: {}{}
 ⠀⠀⠀⠀⠀⢿⡇⠀⠀⢂⠂⠀⠀⢿⡇⢸⣿⠋⠁     Uptime: {}
 ⠀⠀⠀⠀⠀⠘⣧⣈⠓⠚⠒⠋⣠⣞⠀⠘⢿⣷⡄     MemTotal: {} GiB
-⠀⠀⠀⠀⠀⢸⣿⡿⣿⣿⣿⣿⢿⣿⡆⠀⢀⣿⡷     MemAvalable: {} GiB
+⠀⠀⠀⠀⠀⢸⣿⡿⣿⣿⣿⣿⢿⣿⡆⠀⢀⣿⡷     MemAvailable: {} GiB
 ⠀⠀⠀⣴⣶⣿⡿⣽⠟⠉⠉⢻⣿⢾⣷⣶⣿⠟⠁     MemUsed: {} GiB
 ⠀⣴⠋⢻⣿⣿⣟⣿⡀⠀⠀⢸⣿⢿⣿⣟⡟⢶⣄
 ⠈⢯⡀⠈⠻⢿⣿⡽⣇⠀⢀⡸⢿⣿⡿⠋⠀⣀⠝
@@ -204,4 +205,5 @@ println!("⠀⠀⠀⠀⠀⠀⠀⠀
     println!("MemTotal: {}", mem_total);
     println!("MemAvailable: {}", mem_available);
     println!("MemUsed: {}", mem_total - mem_available);*/
+
 }

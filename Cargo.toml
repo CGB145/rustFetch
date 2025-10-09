@@ -6,3 +6,4 @@ edition = "2024"
 [dependencies]
 binary_to_ascii = { git = "https://github.com/CGB145/binary_to_ascii.git" }
 regex = "1.11.3"
+sysinfo = "0.37.2"
