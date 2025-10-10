@@ -4,18 +4,16 @@ use binary_to_ascii::convert;
 use regex::Regex;
 use std::fs;
 use sysinfo::Disks;
+//use std::process::Command;
 
 /*fn print_type_of<T>(_: &T) {
     println!("{}", std::any::type_name::<T>());
 }*/
-
-fn round_to_nth_digit(x:f64, digit: usize) -> f64{
-    let rounded:String = x.to_string();
-
-    let rounded = &rounded[..digit];
-    let rounded = rounded.parse::<f64>().expect("Err");
-    rounded
+fn round_to_nth_digit(x: f64, digits: usize) -> f64 {
+    let factor = 10_f64.powi(digits as i32);
+    (x * factor).round() / factor
 }
+
 
 fn get_numbers(string_with_numbers_placeholder:String, mut string_with_numbers:String) -> String{
     let numbers:[char;10] = ['0', '1','2','3','4','5','6','7','8','9'];
@@ -117,19 +115,6 @@ fn main() {
     };
 
 
-
-    //  OS Type
-    let ostype_file = File::open("/proc/sys/kernel/ostype");
-    // create String to push content to
-    let mut ostype_content = String::new();
-    // push content to created string
-    match ostype_file.expect("REASON").read_to_string(&mut ostype_content){
-        Ok(_) => {},
-        Err(_) =>{println!("Error reading file")},
-    }
-
-    ostype_content = ostype_content.trim().to_string();
-
     // Kernel Info
     let kernel_info_file = File::open("/proc/sys/kernel/osrelease");
     // create String to push content to
@@ -143,7 +128,7 @@ fn main() {
     kernel_info_content = kernel_info_content.replace("\n","").replace("\r","");
 
 
-    // User name
+// User name
     let mut user_name_file = File::open("/var/run/utmp").expect("Err");
     let mut buffer = Vec::new();
 
@@ -166,7 +151,9 @@ fn main() {
         username = Some(cap[1].to_string());
     }
 
-
+/*    let username = Command::new("/bin/bash").arg("-c").arg("whoami").output().expect("Err");
+    let username = String::from_utf8_lossy(&username.stdout).trim().to_string();
+*/
 
     let distro_content = fs::read_to_string("/etc/os-release");
 
@@ -185,25 +172,35 @@ fn main() {
     }
 
 
-println!("⠀⠀⠀⠀⠀⠀⠀⠀
+
+    // Disk Space
+    let disks = Disks::new_with_refreshed_list();
+
+    let total_spcae: u64 = disks[0].total_space()/1024/1024/1024;
+    let available_spcae: u64 = disks[0].available_space()/1024/1024/1024;
+
+/*    // packages
+    let output = Command::new("rpm")
+        .args(["-qa"])
+        .output()
+        .expect("failed to execute rpm");
+
+   let package_count =  String::from_utf8_lossy(&output.stdout)
+       .lines()
+       .count();
+*/
+    print!("⠀⠀⠀⠀⠀⠀⠀⠀
         ⣀⣴⣦⡄⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⢠⢺⡽⣦⣴⣾⡿⣟⣿⢿⣷⣤⣺⠿⡳⡀      Username: {}⠀
-⠀⠀⠸⣿⣠⣿⡿⠛⠛⢿⡟⠛⠻⣿⣷⣠⡷⠁⠀     Distro: {}
-⠀⠀⠀⠀⠹⣿⠇⣠⡄⠀⠀⣠⡀⢹⣿⠉⣠⣤⣦     Kernel: {} {}
-⠀⠀⠀⠀⠀⢿⡇⠀⠀⢂⠂⠀⠀⢿⡇⢸⣿⠋⠁     Uptime: {}
-⠀⠀⠀⠀⠀⠘⣧⣈⠓⠚⠒⠋⣠⣞⠀⠘⢿⣷⡄     MemTotal: {} GiB
-⠀⠀⠀⠀⠀⢸⣿⡿⣿⣿⣿⣿⢿⣿⡆⠀⢀⣿⡷     MemAvailable: {} GiB
-⠀⠀⠀⣴⣶⣿⡿⣽⠟⠉⠉⢻⣿⢾⣷⣶⣿⠟⠁     MemUsed: {} GiB
+⠀⠀⢠⢺⡽⣦⣴⣾⡿⣟⣿⢿⣷⣤⣺⠿⡳⡀⠀ Username: {}
+⠀⠀⠸⣿⣠⣿⡿⠛⠛⢿⡟⠛⠻⣿⣷⣠⡷⠁⠀ Distro: {}
+⠀⠀⠀⠀⠹⣿⠇⣠⡄⠀⠀⣠⡀⢹⣿⠉⣠⣤⣦ Kernel: {}
+⠀⠀⠀⠀⠀⢿⡇⠀⠀⢂⠂⠀⠀⢿⡇⢸⣿⠋⠁ Uptime: {}
+⠀⠀⠀⠀⠀⠘⣧⣈⠓⠚⠒⠋⣠⣞⠀⠘⢿⣷⡄ Memory: {}/{}
+⠀⠀⠀⠀⠀⢸⣿⡿⣿⣿⣿⣿⢿⣿⡆⠀⢀⣿⡷ Space: {}/{}
+⠀⠀⠀⣴⣶⣿⡿⣽⠟⠉⠉⢻⣿⢾⣷⣶⣿⠟⠁
 ⠀⣴⠋⢻⣿⣿⣟⣿⡀⠀⠀⢸⣿⢿⣿⣟⡟⢶⣄
 ⠈⢯⡀⠈⠻⢿⣿⡽⣇⠀⢀⡸⢿⣿⡿⠋⠀⣀⠝
-⠀⠀⠙⠢⠴⠭⠤⠤⠬⠧⠼⠤⠤⠤⠽⠦⠖⠁⠀", username.unwrap(), distro_name, ostype_content, kernel_info_content, uptime_contents_str, mem_total, mem_available, round_to_nth_digit(mem_total-mem_available,4));
-
-    /*println!("Username: {}", username.unwrap());
-    println!("Distro: {}", distro_name);
-    println!("Kernel: {} {}", ostype_content, kernel_info_content);
-    println!("Uptime: {}", uptime_contents_str);
-    println!("MemTotal: {}", mem_total);
-    println!("MemAvailable: {}", mem_available);
-    println!("MemUsed: {}", mem_total - mem_available);*/
-
+⠀⠀⠙⠢⠴⠭⠤⠤⠬⠧⠼⠤⠤⠤⠽⠦⠖⠁⠀",
+             username.unwrap(), distro_name, kernel_info_content, uptime_contents_str,
+             round_to_nth_digit(mem_total-mem_available,3),mem_total,available_spcae,total_spcae);
 }
