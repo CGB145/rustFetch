@@ -107,10 +107,10 @@ fn main() {
 
     let uptime_contents_str = if uptime_contents_float > 60.0{
         uptime_contents_float = uptime_contents_float/60.0;
-        uptime_contents_float = round_to_nth_digit(uptime_contents_float,4);
+        uptime_contents_float = round_to_nth_digit(uptime_contents_float,2);
         format!("{} h", uptime_contents_float)
     }else{
-        uptime_contents_float = round_to_nth_digit(uptime_contents_float,4);
+        uptime_contents_float = round_to_nth_digit(uptime_contents_float,2);
         format!("{} m", uptime_contents_float)
     };
 
@@ -202,5 +202,5 @@ fn main() {
 ⠈⢯⡀⠈⠻⢿⣿⡽⣇⠀⢀⡸⢿⣿⡿⠋⠀⣀⠝
 ⠀⠀⠙⠢⠴⠭⠤⠤⠬⠧⠼⠤⠤⠤⠽⠦⠖⠁⠀",
              username.unwrap(), distro_name, kernel_info_content, uptime_contents_str,
-             round_to_nth_digit(mem_total-mem_available,3),mem_total,available_spcae,total_spcae);
+             round_to_nth_digit(mem_total-mem_available,2),round_to_nth_digit(mem_total,2),available_spcae,total_spcae);
 }
