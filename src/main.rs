@@ -196,7 +196,7 @@ println!("⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⣴⣶⣿⡿⣽⠟⠉⠉⢻⣿⢾⣷⣶⣿⠟⠁     MemUsed: {} GiB
 ⠀⣴⠋⢻⣿⣿⣟⣿⡀⠀⠀⢸⣿⢿⣿⣟⡟⢶⣄
 ⠈⢯⡀⠈⠻⢿⣿⡽⣇⠀⢀⡸⢿⣿⡿⠋⠀⣀⠝
-⠀⠀⠙⠢⠴⠭⠤⠤⠬⠧⠼⠤⠤⠤⠽⠦⠖⠁⠀", username.unwrap(), distro_name, ostype_content, kernel_info_content, uptime_contents_str, mem_total, mem_available, mem_total-mem_available);
+⠀⠀⠙⠢⠴⠭⠤⠤⠬⠧⠼⠤⠤⠤⠽⠦⠖⠁⠀", username.unwrap(), distro_name, ostype_content, kernel_info_content, uptime_contents_str, mem_total, mem_available, round_to_nth_digit(mem_total-mem_available,4));
 
     /*println!("Username: {}", username.unwrap());
     println!("Distro: {}", distro_name);
