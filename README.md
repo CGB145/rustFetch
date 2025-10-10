@@ -1,8 +1,22 @@
 # rustFetch
 
-rustFetch is a simple project I started while learning programming. The goal was to create my own version of Neofetch
- in Rust.
+**rustFetch** is a small, personal project created to learn and experiment with Rust. It's inspired by `neofetch` and displays basic system information in the terminal, but the main goal is to explore Rust programming concepts in a fun way.
 
-⚠️ This is not a production-ready project. There are more complete and feature-rich alternatives available.
+---
 
-Currently, it’s more of an experimental project and a way for me to practice Rust and system programming as I am a beginner.
+## ⚙️ Features
+
+- Displays basic system information (OS, kernel, uptime, etc.)
+- Lightweight and simple
+- Written entirely in Rust as a learning exercise
+
+---
+
+## 🛠️ Installation
+
+To build and run `rustFetch` from source:
+
+```bash
+git clone https://github.com/CGB145/rustFetch.git
+cd rustFetch
+cargo run
