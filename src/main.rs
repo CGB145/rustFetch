@@ -189,6 +189,8 @@ fn main() {
        .lines()
        .count();
 */
+
+    /*
     print!("⠀⠀⠀⠀⠀⠀⠀⠀
         ⣀⣴⣦⡄⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⢠⢺⡽⣦⣴⣾⡿⣟⣿⢿⣷⣤⣺⠿⡳⡀⠀ Username: {}
@@ -203,4 +205,52 @@ fn main() {
 ⠀⠀⠙⠢⠴⠭⠤⠤⠬⠧⠼⠤⠤⠤⠽⠦⠖⠁⠀\n",
              username.unwrap(), distro_name, kernel_info_content, uptime_contents_str,
              round_to_nth_digit(mem_total-mem_available,2),round_to_nth_digit(mem_total,2),available_spcae,total_spcae);
+}
+*/
+
+    let ascii_art = vec![
+        "        ⣀⣴⣦⡄",
+        "⠀⠀⢠⢺⡽⣦⣴⣾⡿⣟⣿⢿⣷⣤⣺⠿⡳⡀",
+        "⠀⠀⠸⣿⣠⣿⡿⠛⠛⢿⡟⠛⠻⣿⣷⣠⡷⠁",
+        "⠀⠀⠀⠀⠹⣿⠇⣠⡄⠀⠀⣠⡀⢹⣿⠉⣠⣤⣦",
+        "⠀⠀⠀⠀⠀⢿⡇⠀⠀⢂⠂⠀⠀⢿⡇⢸⣿⠋⠁",
+        "⠀⠀⠀⠀⠀⠘⣧⣈⠓⠚⠒⠋⣠⣞⠀⠘⢿⣷⡄",
+        "⠀⠀⠀⠀⠀⢸⣿⡿⣿⣿⣿⣿⢿⣿⡆⠀⢀⣿⡷",
+        "⠀⠀⠀⣴⣶⣿⡿⣽⠟⠉⠉⢻⣿⢾⣷⣶⣿⠟⠁",
+        "⠀⣴⠋⢻⣿⣿⣟⣿⡀⠀⠀⢸⣿⢿⣿⣟⡟⢶⣄",
+        "⠈⢯⡀⠈⠻⢿⣿⡽⣇⠀⢀⡸⢿⣿⡿⠋⠀⣀⠝",
+        "⠀⠀⠙⠢⠴⠭⠤⠤⠬⠧⠼⠤⠤⠤⠽⠦⠖",
+    ];
+
+
+    // System info variables
+
+    // Build info lines from variables
+    let info_lines = vec![
+        "┌──────────────────────────────┐".to_string(),
+        format!("Username: {}", username.unwrap()),
+        format!("Distro: {}", distro_name),
+        format!("Kernel: {}", kernel_info_content),
+        format!("Uptime: {}", uptime_contents_str),
+        format!("Memory: {}/{} GiB",  round_to_nth_digit(mem_total-mem_available,2), round_to_nth_digit(mem_total,2)),
+        format!("Available space: {}/{} GiB", available_spcae,total_spcae),
+        "└──────────────────────────────┘".to_string(),
+    ];
+
+
+    let max_width = ascii_art.iter().map(|s| s.chars().count()).max().unwrap_or(0);
+
+    let total_lines = ascii_art.len().max(info_lines.len());
+    let info_start = (total_lines - info_lines.len()) / 2;
+
+    for i in 0..total_lines {
+        let left = ascii_art.get(i).unwrap_or(&"");
+        let right = if i >= info_start && i < info_start + info_lines.len() {
+            &info_lines[i - info_start]
+        } else {
+            ""
+        };
+
+        println!("{:<width$}   {}", left, right, width = max_width);
+    }
 }
