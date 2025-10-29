@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::prelude::*;
+use std::process::Command;
 use binary_to_ascii::convert;
 use regex::Regex;
 use std::fs;
@@ -129,7 +130,7 @@ fn main() {
 
 
 // User name
-    let mut user_name_file = File::open("/var/run/utmp").expect("Err");
+   /*  let mut user_name_file = File::open("/var/run/utmp").expect("Err");
     let mut buffer = Vec::new();
 
     user_name_file.read_to_end(&mut buffer).expect("Err"); // Read entire file as bytes
@@ -150,10 +151,13 @@ fn main() {
     for cap in re.captures_iter(binding.as_str()) {
         username = Some(cap[1].to_string());
     }
+    */
 
-/*    let username = Command::new("/bin/bash").arg("-c").arg("whoami").output().expect("Err");
+
+
+    let username = Command::new("/bin/bash").arg("-c").arg("whoami").output().expect("Err");
     let username = String::from_utf8_lossy(&username.stdout).trim().to_string();
-*/
+
 
     let distro_content = fs::read_to_string("/etc/os-release");
 
@@ -176,8 +180,10 @@ fn main() {
     // Disk Space
     let disks = Disks::new_with_refreshed_list();
 
-    let total_spcae: u64 = disks[0].total_space()/1024/1024/1024;
-    let available_spcae: u64 = disks[0].available_space()/1024/1024/1024;
+    let total_space: u64 = disks[0].total_space()/1024/1024/1024;
+    let available_space: u64 = disks[0].available_space()/1024/1024/1024;
+    let used_space: u64 = total_space-available_space;
+
 
 /*    // packages
     let output = Command::new("rpm")
@@ -228,12 +234,12 @@ fn main() {
     // Build info lines from variables
     let info_lines = vec![
         "┌──────────────────────────────┐".to_string(),
-        format!("Username: {}", username.unwrap()),
+        format!("Username: {}", username),
         format!("Distro: {}", distro_name),
         format!("Kernel: {}", kernel_info_content),
         format!("Uptime: {}", uptime_contents_str),
         format!("Memory: {}/{} GiB",  round_to_nth_digit(mem_total-mem_available,2), round_to_nth_digit(mem_total,2)),
-        format!("Available space: {}/{} GiB", available_spcae,total_spcae),
+        format!("Available space: {}/{} GiB", used_space,total_space),
         "└──────────────────────────────┘".to_string(),
     ];
 
