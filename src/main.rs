@@ -1,8 +1,8 @@
 use std::fs::File;
 use std::io::prelude::*;
 use std::process::Command;
-use binary_to_ascii::convert;
-use regex::Regex;
+//use binary_to_ascii::convert;
+//use regex::Regex;
 use std::fs;
 use sysinfo::Disks;
 //use std::process::Command;
